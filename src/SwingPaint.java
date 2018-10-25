@@ -61,7 +61,7 @@ public class SwingPaint {
     
     
     ImageIcon recIcon = new ImageIcon(
-  		  SwingPaint.class.getResource("48pixel-Editing-Rectangle-icon.png"));
+  		  SwingPaint.class.getResource("icons/48pixel-Editing-Rectangle-icon.png"));
     JLabel recLabel = new JLabel(recIcon);	
     recLabel.addMouseListener(new MouseAdapter() 
 	{
@@ -75,7 +75,7 @@ public class SwingPaint {
 	});
   	
     ImageIcon lineIcon = new ImageIcon(
-  		  SwingPaint.class.getResource("48pixel-Line-icon.png"));
+  		  SwingPaint.class.getResource("icons/48pixel-Line-icon.png"));
      JLabel lineLabel = new JLabel(lineIcon);
      lineLabel.addMouseListener(new MouseAdapter() 
 		{
@@ -90,7 +90,7 @@ public class SwingPaint {
 		});
      
     ImageIcon circleIcon = new ImageIcon(
-  		  SwingPaint.class.getResource("Arrow-Circle-icon.png"));
+  		  SwingPaint.class.getResource("icons/Arrow-Circle-icon.png"));
     JLabel circleLabel = new JLabel(circleIcon);
     circleLabel.addMouseListener(new MouseAdapter() 
 	{
@@ -105,7 +105,7 @@ public class SwingPaint {
 	});  
        
     ImageIcon redoIcon = new ImageIcon(
-  		  SwingPaint.class.getResource("redo-icon.png"));
+  		  SwingPaint.class.getResource("icons/redo-icon.png"));
     JLabel redoLabel = new JLabel(redoIcon);
     redoLabel.addMouseListener(new MouseAdapter() 
 	{
@@ -143,7 +143,7 @@ public class SwingPaint {
 	});
     
     ImageIcon undoIcon = new ImageIcon(
-  		  SwingPaint.class.getResource("undo-icon.png"));
+  		  SwingPaint.class.getResource("icons/undo-icon.png"));
     JLabel undoLabel = new JLabel(undoIcon);
     undoLabel.addMouseListener(new MouseAdapter() 
 	{
@@ -175,7 +175,7 @@ public class SwingPaint {
 	});
     
     ImageIcon deleteIcon = new ImageIcon(
-  		  SwingPaint.class.getResource("Close-2-icon.png"));
+  		  SwingPaint.class.getResource("icons/Close-2-icon.png"));
       deleteLabel = new JLabel(deleteIcon);
       deleteLabel.addMouseListener(new MouseAdapter() 
 		{
@@ -189,7 +189,7 @@ public class SwingPaint {
 		});
       
       ImageIcon textIcon = new ImageIcon(
-      		  SwingPaint.class.getResource("Text-icon.png"));
+      		  SwingPaint.class.getResource("icons/Text-icon.png"));
       JLabel textLabel = new JLabel(textIcon);     
       textLabel.addMouseListener(new MouseAdapter() 
 		{
@@ -203,7 +203,7 @@ public class SwingPaint {
 		});
       
       ImageIcon helpIcon = new ImageIcon(
-      		  SwingPaint.class.getResource("help-icon.png"));
+      		  SwingPaint.class.getResource("icons/help-icon.png"));
       JLabel helpLabel = new JLabel(helpIcon);     
       helpLabel.addMouseListener(new MouseAdapter() 
 		{
