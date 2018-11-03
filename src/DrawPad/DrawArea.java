@@ -1,66 +1,68 @@
- 
+package DrawPad;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
+import Main.Main;
+
  
 
 public class DrawArea extends JComponent implements DrawingPadConcept{
  
   // Image in which we're going to draw
   private Image image;
+  
+   static BufferedImage bImg = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+  
   // Graphics2D object ==> used to draw on
-  private static Graphics2D g2;
+  private static Graphics2D g2 = bImg.createGraphics();
+ 
   // Mouse coordinates
-  public static int currentX;
-  public static int currentY;
-  public int oldX;
-  public int oldY;
+  private static int currentX;
+  private static int currentY;
+  
+  private int oldX;
+  private int oldY;
   private int oldLineX = 0;
   private int oldLineY = 0;
   public int numClicks = 0;
-  Point location;
-  public String shape;
-  private static String myInput;
-  
-  private int windowWidth = getSize().width;
-  private int windowHeight = getSize().height;
-  
-  public static String topOfUndoStack;
-  public static String topOfRedoStack;
+  private String shape;
+  private static String topOfUndoStack;
+  private static String topOfRedoStack;
   
   
   //for undo command//
-  public ArrayList<String> previousShapes = new ArrayList<String>();
-  public ArrayList<Integer> previousOldXCoor = new ArrayList<Integer>();
-  public ArrayList<Integer> previousOldYCoor = new ArrayList<Integer>();
-  public ArrayList<Integer> previousXCoor = new ArrayList<Integer>();
-  public ArrayList<Integer> previousYCoor = new ArrayList<Integer>();
+  private ArrayList<String> previousShapes = new ArrayList<String>();
+  private ArrayList<Integer> previousOldXCoor = new ArrayList<Integer>();
+  private ArrayList<Integer> previousOldYCoor = new ArrayList<Integer>();
+  private ArrayList<Integer> previousXCoor = new ArrayList<Integer>();
+  private ArrayList<Integer> previousYCoor = new ArrayList<Integer>();
   
  
   //for redo command
-  public ArrayList<String> redoCommands = new ArrayList<String>();
-  public ArrayList<Integer> redoX = new ArrayList<Integer>();
-  public ArrayList<Integer> redoY = new ArrayList<Integer>();
-  public ArrayList<Integer> redoOldX = new ArrayList<Integer>();
-  public ArrayList<Integer> redoOldY = new ArrayList<Integer>();
+  private ArrayList<String> redoCommands = new ArrayList<String>();
+  private ArrayList<Integer> redoX = new ArrayList<Integer>();
+  private ArrayList<Integer> redoY = new ArrayList<Integer>();
+  private ArrayList<Integer> redoOldX = new ArrayList<Integer>();
+  private ArrayList<Integer> redoOldY = new ArrayList<Integer>();
   
-  //soecifically for text input
-  public ArrayList<String> textInputs = new ArrayList<String>();
+  //specifically for text input
+  private ArrayList<String> textInputs = new ArrayList<String>();
   
   
   public DrawArea() {
@@ -88,7 +90,9 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
     addMouseListener(new MouseAdapter() {
       public void mousePressed(MouseEvent e) {
         // save coord x,y when mouse is pressed
-        oldX = e.getX();
+       
+       // setOldX(e.getX());
+    	oldX = e.getX();
         oldY = e.getY();      
       }
     });
@@ -109,7 +113,7 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
 	    	
 	    	
 	    	if(shape.equals("rec")){	    		
-	    		Main.invokeRectangle.invoke(currentX,currentY);
+	    		Main.getInvokeRectangle().invoke(currentX,currentY);
 	    		if(numClicks == 2){
 	    		//previousShapes.add(shape);
 	    		
@@ -119,7 +123,7 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
 	    	}
 	    	 if(shape.equals("circ")){
 	    		//circle(currentX,currentY);
-	    		 Main.invokeCircle.invoke(currentX,currentY);
+	    		 Main.getInvokeCircle().invoke(currentX,currentY);
 	    		 if(numClicks == 2){
 	 	    	//	previousShapes.add(shape);
 	 	    		numClicks = 0;
@@ -127,7 +131,7 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
 	    	}
 	    	 if(shape.equals("line")){
 		    		//line(currentX,currentY);
-	    		 Main.invokeLine.invoke(currentX,currentY);
+	    		 Main.getInvokeLine().invoke(currentX,currentY);
 	    		 if(numClicks == 2){
 	 	    		//previousShapes.add(shape);
 	 	    		numClicks = 0;
@@ -163,6 +167,8 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
         	
           repaint();
           // store current coords x,y as olds x,y
+         
+          //setOldX(currentX);
           oldX = currentX;
           oldY = currentY;
         }
@@ -187,18 +193,7 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
     g.drawImage(image, 0, 0, null);
   }
  	 
-	  
-//	  public static void string(String input, int xCoor, int yCoor){
-//		  		
-//		  		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//		        RenderingHints.VALUE_ANTIALIAS_ON);
-//		        Font font = new Font("Serif", Font.PLAIN, 24);
-//		        g2.setFont(font);
-//		        System.out.println("Writing: " + input + "at " + xCoor + "," + yCoor);
-//		        g2.drawString(input, xCoor, yCoor);		   	       
-//	  }
-	  
-	  
+	  	  
 	 
 	  @Override
 	  public void delete() {
@@ -298,19 +293,19 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
 				    System.out.println("redoY size: " +redoY.size()  );
 				    redoY.add(previousYCoor.get(i));
 				    
-				    Main.invokeRectangle.pressRedo();
+				    Main.getInvokeRectangle().pressRedo();
 			  }
 			  else if(previousShapes.get(i).equals("circ")){
 				  System.out.println("Putting a circle back");
-				  Main.invokeCircle.pressRedo();
+				  Main.getInvokeCircle().pressRedo();
 			  }
 			  else if(previousShapes.get(i).equals("line")){
 				  System.out.println("Putting a line back");
-				  Main.invokeLine.pressRedo();
+				  Main.getInvokeLine().pressRedo();
 			  }
 			  else if(previousShapes.get(i).equals("text")){
 				  System.out.println("Putting a text back");
-				  Main.invokeText.pressRedo();
+				  Main.getInvokeText().pressRedo();
 			  }
 		  }	
 		  
@@ -863,5 +858,101 @@ public class DrawArea extends JComponent implements DrawingPadConcept{
 		    textInputs.add(previousShapes.size()-1, text);
 }		
 	}
- 
+	
+	
+	public void settopOfUndoStack(String newtopOfUndoStack){
+		topOfUndoStack = newtopOfUndoStack;
+	}
+	
+	public String gettopOfUndoStack(){
+		return topOfUndoStack; 
+	}
+	
+	public void settopOfRedoStack(String newtopOfRedoStack){
+		topOfRedoStack = newtopOfRedoStack;
+	}
+	
+	public String gettopOfRedoStack(){
+		return topOfRedoStack; 
+	}
+	
+	
+	public void setShape(String newShape){
+		shape = newShape;
+	}
+	
+	public String getShape(){
+		return shape; 
+	}
+	
+	
+	
+	public void setOldX(int newOldX){
+		oldX = newOldX;
+	}
+	
+	public int getOldX(){
+		return oldX; 
+	}
+	
+	public void setOldY(int newOldY){
+		oldY = newOldY;
+	}
+	
+	public int getOldY(){
+		return oldY; 
+	}
+
+	public void setNumClicks(int newNumClicks){
+		numClicks = newNumClicks;
+	}
+	
+	public int getNumClicks(){
+		return numClicks; 
+	}
+	
+	
+	public void setOldLineX(int newOldLineX){
+		oldLineX = newOldLineX;
+	}
+	
+	public int getOldLineX(){
+		return oldLineX; 
+	}
+	
+	public void setOldLineY(int newOldLineY){
+		oldLineY = newOldLineY;
+	}
+	
+	public int getOldLineY(){
+		return oldLineY; 
+	}
+	
+	@Override
+	public void saveImage() {
+		System.out.println("You are saving an image...");
+		
+		repaint();
+			      		
+	      g2.dispose();
+	      RenderedImage rendImage = bImg;
+	      
+		
+		try {			
+			if (ImageIO.write(rendImage, "PNG", new File("./output_image.PNG")))
+            {
+                System.out.println("-- saved");
+            }
+    } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+    }
+		
+	}
+
+	@Override
+	public void loadImage() {
+		// TODO Auto-generated method stub
+		System.out.println("You are loading an image...");
+	}
 }

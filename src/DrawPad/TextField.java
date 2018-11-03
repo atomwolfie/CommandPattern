@@ -1,3 +1,7 @@
+package DrawPad;
+
+
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -5,9 +9,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import DrawCommands.InsertText;
+import DrawCommands.Invoker;
+
 import javax.swing.JButton;
 import java.util.List;
 import java.util.LinkedList;
+import Main.Main;
 
 public class TextField {
 
@@ -84,7 +93,8 @@ public class TextField {
 				System.out.println("You entered " + inputText);
 				
 				
-				Main.invokeText.invokeText(inputText,xCoor,yCoor);
+				//Main.invokeText.invokeText(inputText,xCoor,yCoor);
+								
 				frame.setVisible(false);
 			}
 			
@@ -92,7 +102,21 @@ public class TextField {
 	
 	};
 	
+	public void setX(int newXCoor){
+		xCoor = newXCoor;
+	}
 	
+	public int getX(){
+		return xCoor;
+	}
+	
+	public void setY(int newYCoor){
+		yCoor = newYCoor;
+	}
+	
+	public int getY(){
+		return yCoor;
+	}
 	
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub
